@@ -13,18 +13,21 @@ function displayGifs() {
     }).done(function(response) {
     		console.log(response);
     	
-    		$('#grid').empty();
+    		$('.grid').empty();
     
             for (i = 0; i < 60; i++) {
+// .css("height", response.data[i].images.fixed_width.height);
+
                 var gif = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width.url);
                 var link = $("<a target='blank'>").attr("href", response.data[i].bitly_gif_url).append(gif);
                 var still = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width_still.url);
                 var rating = $("<h1 class='rating'>").append(response.data[i].rating);
                 var div2 = $("<div class='gifhover box3'>").append(rating).append(link);
                 var div1 = $("<div class='wrap box3'>").append(still).append(div2);
-                var listItem = $("<li>").append(div1).attr("data-aos", "slide-up");
-                $('#grid').append(listItem);
+                var listItem = $("<div>").append(div1).addClass("grid-item").attr("data-aos", "slide-up");
+                $('.grid').append(listItem); 
             }
+            
     });
 };
 
