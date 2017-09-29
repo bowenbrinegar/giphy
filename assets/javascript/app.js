@@ -1,6 +1,7 @@
 $(document).ready(function()  {
 
 
+
 var gifs = ["Matrix", "Notebook", "Nobody", "King", "Barbie", "Psych", "College", "Trump", "Halloween", "Europe", "United States", "Coding",];
 
 function displayGifs() {
@@ -12,24 +13,50 @@ function displayGifs() {
       method: 'GET',
     }).done(function(response) {
     		console.log(response);
+    
     	
     		$('.grid').empty();
     
             for (i = 0; i < 60; i++) {
-// .css("height", response.data[i].images.fixed_width.height);
-
-                var gif = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width.url);
-                var link = $("<a target='blank'>").attr("href", response.data[i].bitly_gif_url).append(gif);
-                var still = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width_still.url);
-                var rating = $("<h1 class='rating'>").append(response.data[i].rating);
-                var div2 = $("<div class='gifhover box3'>").append(rating).append(link);
-                var div1 = $("<div class='wrap box3'>").append(still).append(div2);
-                var listItem = $("<div>").append(div1).addClass("grid-item").attr("data-aos", "slide-up");
-                $('.grid').append(listItem); 
-            }
+               // var gif = $("<img>").attr("src", response.data[i].images.fixed_width.url); 
+               // var listItem = $("<div>").append(gif).attr("id", "grid-item").css("height", response.data[i].images.fixed_width.height).attr("data-aos", "slide-up");
             
+            var gif = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width.url).css("height", response.data[i].images.fixed_width.height * 1.5);
+            var link = $("<a target='blank'>").attr("href", response.data[i].bitly_gif_url).append(gif);
+            var still = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width_still.url).css("height", response.data[i].images.fixed_width.height * 1.5);
+            var rating = $("<h1 class='rating'>").append(response.data[i].rating);
+            var div2 = $("<div class='gifhover box3'>").append(rating).append(link).css("height", response.data[i].images.fixed_width.height * 1.5);
+            var div1 = $("<div class='wrap box3'>").append(still).append(div2).css("height", response.data[i].images.fixed_width.height * 1.5);
+              
+            var listItem = $("<div>").append(div1).attr("id", "grid-item").css("height", response.data[i].images.fixed_width.height * 1.5).attr("data-aos", "slide-up");
+                
+                  // append items to grid
+                  $('#grid').append( listItem )
+                    // add and lay out newly appended items
+                    $('#grid').masonry( 'appended', listItem);
+            }
+
+
+    
     });
+
+            $('#grid').masonry({
+              itemSelector: '#grid-item',
+              columnWidth: 5,
+              // isAnimated: true,
+              // isFitWidth: true
+            });
 };
+            // .css("height", response.data[i].images.fixed_width.height)
+
+            // var gif = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width.url);
+            // var link = $("<a target='blank'>").attr("href", response.data[i].bitly_gif_url).append(gif);
+            // var still = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width_still.url);
+            // var rating = $("<h1 class='rating'>").append(response.data[i].rating);
+            // var div2 = $("<div class='gifhover box3'>").append(rating).append(link);
+            // var div1 = $("<div class='wrap box3'>").append(still).append(div2);
+            // var listItem = $("<div>").append(div1).addClass("grid-item").addClass("grid-item--height1").attr("data-aos", "slide-up");
+            // $('.grid').append(listItem); 
 
 
 function renderButtons() {
@@ -53,6 +80,9 @@ $("#add-gif").on("click", function(event) {
 
 $(document).on("click", ".gif", displayGifs);
 renderButtons();
+
+
+
 
 })
 
