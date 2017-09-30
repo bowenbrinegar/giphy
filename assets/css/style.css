@@ -1,3 +1,29 @@
+button {
+  outline: none;
+}
+
+button:active {
+  outline: none;
+  border: none;
+}
+
+button:focus {
+  outline: none;
+  border: none;
+}
+
+button:visited {
+  outline: none;
+  border: none;
+}
+
+
+.row {
+  margin: 0;
+}
+body {
+  margin: 0;
+}
 
 #myBtn {
     display: none; /* Hidden by default */
@@ -36,16 +62,14 @@
 }
 
 .container2 {
-  position: relative;
+ /* position: relative;*/
   margin: auto;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: 0px 0px 0px 70px;
+  width: 100%;
+  /*margin: 0px 0px 0px 70px;*/
 }
 
 #grid {
+  margin: auto;
   width: 1280px;
 }
 
