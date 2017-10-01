@@ -9,29 +9,38 @@ var xxLink = [];
 var xxStill = [];
 var xxRating = [];
 var xxHeight = [];
-var offset = 0;
+var term;
 
 function displayGifs() {
+    term = $(this).attr('data-name');
+    var queryURL;
 
+    var offset = 0;
+
+   
     
-    offset = 0;
+    $('#grid').empty();
+    // if (click > 3) {
+        
+    //     $('#grid').masonry( 'remove', $('#grid').find('.grid-item') ).masonry('layout');
+    //     $('#grid').masonry({
+    //       itemSelector: '.grid-item',
+    //       columnWidth: 5,
+    //     });
+    // }
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + $(this).attr('data-name') + "&offset=" + offset + "&api_key=z8RiFI1Cu7OaqAm0pWO8MEzbb5gbmNvC&limit=30";
+    firstRun();
 
+    function URL() {
+        queryURL = "https://api.giphy.com/v1/gifs/search?q=" + term + "&offset=" + offset + "&api_key=z8RiFI1Cu7OaqAm0pWO8MEzbb5gbmNvC&limit=15";
+    }
 
-    $('#grid').masonry( 'remove', $('#grid').find('.grid-item') ).masonry('layout');
-    $('#grid').masonry({
-      itemSelector: '.grid-item',
-      columnWidth: 5,
-    });
-
-// $(this).attr('data-name')
     function fetchAjaxContent() {
         $.ajax({
             url: queryURL,    
             method: 'GET',
         }).done(function(response) {
-              for (var i = 0; i < 30 ;i++) { 
+              for (var i = 0; i < 15 ;i++) { 
                 xxGif.push(response.data[i].images.fixed_width.url);
                 xxLink.push(response.data[i].bitly_gif_url)
                 xxStill.push(response.data[i].images.fixed_width_still.url)
@@ -41,63 +50,58 @@ function displayGifs() {
         });
     };
 
-        function contentCreator() {
-            for (var i = 0; i < 10; i++) {
-                        
-
-                        var gif = $("<img class='box3'>").attr("src", xxGif[i]).css("height", xxHeight[i] * 1.5);
-                        var link = $("<a target='blank'>").attr("href", xxLink[i]).append(gif);
-                        var still = $("<img class='box3'>").attr("src", xxStill[i]).css("height", xxHeight * 1.5);
-                        var rating = $("<h1 class='rating'>").append(xxRating[i]);
-                        var div2 = $("<div class='gifhover box3'>").append(rating).append(link).css("height", xxHeight * 1.5);
-                        var div1 = $("<div class='wrap box3'>").append(still).append(div2).css("height", xxHeight * 1.5);
-                          
-                        let listItem = $("<div>").append(div1).addClass("grid-item").css("height", xxHeight * 1.5).attr("data-aos", "slide-up");
-                             
-                            $('#grid').append( listItem )
-                            $('#grid').masonry( 'appended', listItem);
-                };
-
-                
-
-                xxGif = [];
-                xxLink = [];
-                xxStill = [];
-                xxRating = [];
-                xxHeight = [];
-        }
-        
-        function run() {
-   
+    function firstRun() {
+            URL();
             fetchAjaxContent();
-            contentCreator();
-            offset = offset + 30;
+            setTimeout(loop, 500);
+            refresh();
         }
 
-        run();
+    $(window).scroll(function() {
+        if ($(window).scrollTop() >= ($(document).height() - $(window).height()) * 0.9) {
+            console.log("help!")
+            URL();
+            fetchAjaxContent();
+            loop();
+            refresh();
+        }
+    });
 
-        $(window).scroll(function(){
+    function refresh() {
+        offset = offset + 15;
+        xxGif = [];
+        xxLink = [];
+        xxStill = [];
+        xxRating = [];
+        xxHeight = [];
+    }    
 
-            if ($(window).scrollTop() >= ($(document).height() - $(window).height())* 0.9) {
-  
-                fetchAjaxContent();
-                contentCreator();
-                offset = offset + 30;
-            }
-        });
+    function loop() {
+        for (var x = 0; x < 15; x++) {
+            var gif = $("<img class='box3'>").attr("src", xxGif[x]).css("height", xxHeight[x] * 1.5);
+            var link = $("<a target='blank'>").attr("href", xxLink[x]).append(gif);
+            var still = $("<img class='box3'>").attr("src", xxStill[x]).css("height", xxHeight[x] * 1.5);
+            var rating = $("<h1 class='rating'>").append(xxRating[x]);
+            var div2 = $("<div class='gifhover box3'>").append(rating).append(link).css("height", xxHeight[x] * 1.5);
+            var div1 = $("<div class='wrap box3'>").append(still).append(div2).css("height", xxHeight[x] * 1.5);
+              
+            var listItem = $("<div>").append(div1).addClass("grid-item").css("height", xxHeight[x] * 1.5).attr("data-aos", "slide-up");
+            
+            $('#grid').append( listItem  )
 
-        
+            // $('#grid').masonry( 'appended', listItem );  
 
+            // $('#grid').masonry({
+            //   itemSelector: '.grid-item',
+            //   columnWidth: 5,
+            // });
+        }    
 
-        
-
+ 
+    }
 };
 
 
-$('#grid').masonry({
-  itemSelector: '.grid-item',
-  columnWidth: 5,
-});
 
 
 function renderButtons() {
@@ -119,7 +123,8 @@ $("#add-gif").on("click", function(event) {
 });
 
 
-$(document).on("click", ".gif", displayGifs)
+$('#buttons-view').on("click", ".gif", displayGifs)
+
 renderButtons();
 
 
