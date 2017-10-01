@@ -1,8 +1,6 @@
 $(document).ready(function()  {
 
-
-
-var gifs = ["Matrix", "Notebook", "Nobody", "King", "Barbie", "Psych", "College", "Trump", "Halloween", "Europe", "United States", "Coding"];
+var gifs = ["Colbert", "Art", "Photography", "Game of Thrones", "Barbie", "Psych", "College", "Trump", "Halloween", "Spain", "US", "Coding"];
 
 var xxGif = [];
 var xxLink = [];
@@ -10,18 +8,23 @@ var xxStill = [];
 var xxRating = [];
 var xxHeight = [];
 var term;
+var offset;
+var queryURL;
+var click = 0;
 
 function displayGifs() {
-    term = $(this).attr('data-name');
-    var queryURL;
+    offset = 0;
+    click++;
 
-    var offset = 0;
-  
-    $('#grid').masonry( 'remove', $('#grid').find('.grid-item') ).masonry('layout');
-    $('#grid').masonry({
-      itemSelector: '.grid-item',
-      columnWidth: 5,
-    });
+    term = $(this).attr('data-name');
+    
+    if (click > 1) {
+        $('#grid').masonry( 'remove', $('#grid').find('.grid-item') ).masonry('layout');
+        $('#grid').masonry({
+          itemSelector: '.grid-item',
+          columnWidth: 5,
+        });
+    }
 
     firstRun();
 
@@ -45,24 +48,25 @@ function displayGifs() {
     };
 
     function firstRun() {
-            URL();
-            fetchAjaxContent();
-            setTimeout(loop, 500);
-            refresh();
-        }
+        console.log(offset)
+        URL();
+        fetchAjaxContent();
+        setTimeout(loop, 500);
+        refresh();
+    }
 
     $(window).scroll(function() {
         if ($(window).scrollTop() >= ($(document).height() - $(window).height()) * 0.9) {
-            console.log("help!")
+            offset = offset + 30
+            console.log(offset)
             URL();
             fetchAjaxContent();
             loop();
-            refresh();
+            refresh();  
         }
     });
 
     function refresh() {
-        offset = offset + 30;
         xxGif = [];
         xxLink = [];
         xxStill = [];
@@ -84,13 +88,12 @@ function displayGifs() {
             $('#grid').append( listItem  )
 
             $('#grid').masonry( 'appended', listItem );  
-
-            $('#grid').masonry({
-              itemSelector: '.grid-item',
-              columnWidth: 5,
-            });
         }    
     }
+    $('#grid').masonry({
+              itemSelector: '.grid-item',
+              columnWidth: 5,
+    });
 };
 
 
@@ -122,54 +125,4 @@ renderButtons();
 
 });
 
-
-// $.ajax({
- //      url: queryURL,    
- //      method: 'GET'
- //    }).done(function(response) {
- //            console.log(response)
-
- //            for (i = 0; i < 1; i++) {
-              
- //                var gif = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width.url).css("height", response.data[i].images.fixed_width.height * 1.5);
- //                var link = $("<a target='blank'>").attr("href", response.data[i].bitly_gif_url).append(gif);
- //                var still = $("<img class='box3'>").attr("src", response.data[i].images.fixed_width_still.url).css("height", response.data[i].images.fixed_width.height * 1.5);
- //                var rating = $("<h1 class='rating'>").append(response.data[i].rating);
- //                var div2 = $("<div class='gifhover box3'>").append(rating).append(link).css("height", response.data[i].images.fixed_width.height * 1.5);
- //                var div1 = $("<div class='wrap box3'>").append(still).append(div2).css("height", response.data[i].images.fixed_width.height * 1.5);
-                  
- //                var listItem = $("<div>").append(div1).addClass("grid-item").css("height", response.data[i].images.fixed_width.height * 1.5).attr("data-aos", "slide-up");
-                     
- //                    $('#grid').append( listItem )
- //                    $('#grid').masonry( 'appended', listItem);
- //            }
-
-            
- //    });
-
-
-
-    
-
-    // $(window).scroll(function(){
-
-    //             if ($(window).scrollTop() >= ($(document).height() - $(window).height())* 0.9) {
-
-    //                 for (var x = 0; x < 20; x++) {
-              
-    //                     var gif = $("<img class='box3'>").attr("src", response.data[x].images.fixed_width.url).css("height", response.data[x].images.fixed_width.height * 1.5);
-    //                     var link = $("<a target='blank'>").attr("href", response.data[x].bitly_gif_url).append(gif);
-    //                     var still = $("<img class='box3'>").attr("src", response.data[x].images.fixed_width_still.url).css("height", response.data[x].images.fixed_width.height * 1.5);
-    //                     var rating = $("<h1 class='rating'>").append(response.data[x].rating);
-    //                     var div2 = $("<div class='gifhover box3'>").append(rating).append(link).css("height", response.data[x].images.fixed_width.height * 1.5);
-    //                     var div1 = $("<div class='wrap box3'>").append(still).append(div2).css("height", response.data[x].images.fixed_width.height * 1.5);
-                          
-    //                     var listItem = $("<div>").append(div1).addClass("grid-item").css("height", response.data[x].images.fixed_width.height * 1.5).attr("data-aos", "slide-up");
-                             
-    //                         $('#grid').append( listItem )
-    //                         $('#grid').masonry( 'appended', listItem);
-    //                 }
-                
-    //             };
-    //         });
 
