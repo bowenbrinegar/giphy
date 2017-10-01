@@ -16,23 +16,17 @@ function displayGifs() {
     var queryURL;
 
     var offset = 0;
-
-   
-    
-    $('#grid').empty();
-    // if (click > 3) {
-        
-    //     $('#grid').masonry( 'remove', $('#grid').find('.grid-item') ).masonry('layout');
-    //     $('#grid').masonry({
-    //       itemSelector: '.grid-item',
-    //       columnWidth: 5,
-    //     });
-    // }
+  
+    $('#grid').masonry( 'remove', $('#grid').find('.grid-item') ).masonry('layout');
+    $('#grid').masonry({
+      itemSelector: '.grid-item',
+      columnWidth: 5,
+    });
 
     firstRun();
 
     function URL() {
-        queryURL = "https://api.giphy.com/v1/gifs/search?q=" + term + "&offset=" + offset + "&api_key=z8RiFI1Cu7OaqAm0pWO8MEzbb5gbmNvC&limit=15";
+        queryURL = "https://api.giphy.com/v1/gifs/search?q=" + term + "&offset=" + offset + "&api_key=z8RiFI1Cu7OaqAm0pWO8MEzbb5gbmNvC&limit=30";
     }
 
     function fetchAjaxContent() {
@@ -40,7 +34,7 @@ function displayGifs() {
             url: queryURL,    
             method: 'GET',
         }).done(function(response) {
-              for (var i = 0; i < 15 ;i++) { 
+              for (var i = 0; i < 30 ;i++) { 
                 xxGif.push(response.data[i].images.fixed_width.url);
                 xxLink.push(response.data[i].bitly_gif_url)
                 xxStill.push(response.data[i].images.fixed_width_still.url)
@@ -68,7 +62,7 @@ function displayGifs() {
     });
 
     function refresh() {
-        offset = offset + 15;
+        offset = offset + 30;
         xxGif = [];
         xxLink = [];
         xxStill = [];
@@ -77,7 +71,7 @@ function displayGifs() {
     }    
 
     function loop() {
-        for (var x = 0; x < 15; x++) {
+        for (var x = 0; x < 30; x++) {
             var gif = $("<img class='box3'>").attr("src", xxGif[x]).css("height", xxHeight[x] * 1.5);
             var link = $("<a target='blank'>").attr("href", xxLink[x]).append(gif);
             var still = $("<img class='box3'>").attr("src", xxStill[x]).css("height", xxHeight[x] * 1.5);
@@ -89,15 +83,13 @@ function displayGifs() {
             
             $('#grid').append( listItem  )
 
-            // $('#grid').masonry( 'appended', listItem );  
+            $('#grid').masonry( 'appended', listItem );  
 
-            // $('#grid').masonry({
-            //   itemSelector: '.grid-item',
-            //   columnWidth: 5,
-            // });
+            $('#grid').masonry({
+              itemSelector: '.grid-item',
+              columnWidth: 5,
+            });
         }    
-
- 
     }
 };
 
